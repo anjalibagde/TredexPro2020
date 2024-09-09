@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+  labels:
+    app: django
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      containers:
+        - name: django
+          image: bagdeanjali65/tredex2020:tedx
+          ports:
+            - containerPort: 8000
+          env:
+          volumeMounts:
+            - name: django-config
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: django-config
+          configMap:
+            name: django-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+data:
+  .env: |
+    # Your environment variables here
+    DEBUG=True
+    #SECRET_KEY=your-secret-key
+    DATABASE_URL=sqlite:///db.sqlite
+
+    # Add other environment variables as needed
+
