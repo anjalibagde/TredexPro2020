@@ -40,5 +40,3 @@ data:
     #SECRET_KEY=your-secret-key
     DATABASE_URL=sqlite:///db.sqlite
 
-    # Add other environment variables as needed
-
