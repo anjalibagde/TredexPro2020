@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x  # Specify your Python version
+    commands:
+      - echo "Installing dependencies"
+      - pip install -r requirements.txt
+      - echo "Installing Docker"
+      - yum install -y docker
+      - service docker start
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654654333322.dkr.ecr.us-east-1.amazonaws.com
+      - echo "Building Docker image"
+      - docker build -t tredex .
+  build:
+    commands:
+      - echo "Tagging Docker image"
+      - docker tag tredex:latest 654654333322.dkr.ecr.us-east-1.amazonaws.com/tredex:latest
+  post_build:
+    commands:
+      - echo "Pushing Docker image to ECR"
+      - docker push 654654333322.dkr.ecr.us-east-1.amazonaws.com/tredex:latest
+artifacts:
+  files:
+    - '**/*'  # Include all files (or specify as needed)
+  discard-paths: yes
+
