@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: my-task-definition
+        TaskDefinition: td
         LoadBalancerInfo:
-          ContainerName: my-container
+          ContainerName: tredex
           ContainerPort: 80
